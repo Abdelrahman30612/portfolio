@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:#111827;color:#e5e7eb;min-height:100vh;}
+    .admin{display:grid;grid-template-columns:220px 1fr;min-height:100vh;}
+    .sidebar{background:#1f2937;padding:24px 16px;border-right:1px solid #374151;position:sticky;top:0;height:100vh;overflow-y:auto;}
+    .sidebar h2{font-size:1.1rem;margin-bottom:30px;color:#a78bfa;text-align:center;}
+    .sidebar ul{list-style:none;}
+    .sidebar li{margin-bottom:4px;}
+    .sidebar a{
+      display:flex;align-items:center;gap:10px;padding:10px 14px;
+      border-radius:8px;color:#9ca3af;text-decoration:none;font-size:0.85rem;transition:all 0.2s;
+    }
+    .sidebar a:hover,.sidebar a.active{background:#374151;color:#fff;}
+    .sidebar a i{width:18px;font-size:0.9rem;}
+    .main{padding:30px 40px;overflow-y:auto;}
+    .page-header{margin-bottom:25px;}
+    .page-header h1{font-size:1.5rem;margin-bottom:4px;}
+    .page-header p{color:#9ca3af;font-size:0.85rem;}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:25px;}
+    .stat-card{background:#1f2937;padding:18px;border-radius:10px;border:1px solid #374151;}
+    .stat-card .icon{font-size:1.2rem;color:#a78bfa;margin-bottom:8px;}
+    .stat-card .number{font-size:1.8rem;font-weight:700;}
+    .stat-card .label{color:#9ca3af;font-size:0.8rem;}
+    .section{display:none;}
+    .section.active{display:block;}
+    .card{background:#1f2937;border-radius:10px;border:1px solid #374151;padding:24px;margin-bottom:20px;}
+    .card h3{font-size:1rem;margin-bottom:16px;color:#e5e7eb;}
+    .form-group{margin-bottom:16px;}
+    .form-group label{display:block;margin-bottom:6px;color:#9ca3af;font-size:0.8rem;font-weight:500;}
+    .form-group input,.form-group textarea,.form-group select{
+      width:100%;padding:10px 12px;background:#374151;border:1px solid #4b5563;
+      border-radius:8px;color:#e5e7eb;font-size:0.85rem;font-family:inherit;
+    }
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:#a78bfa;}
+    .form-group textarea{min-height:80px;resize:vertical;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+    .btn{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-size:0.85rem;font-weight:500;transition:all 0.2s;font-family:inherit;}
+    .btn-primary{background:#a78bfa;color:#fff;}
+    .btn-primary:hover{background:#8b5cf6;}
+    .btn-danger{background:#ef4444;color:#fff;}
+    .btn-danger:hover{background:#dc2626;}
+    .btn-sm{padding:6px 12px;font-size:0.8rem;}
+    .btn-ghost{background:#374151;color:#e5e7eb;}
+    .btn-ghost:hover{background:#4b5563;}
+    table{width:100%;border-collapse:collapse;}
+    th,td{padding:12px 16px;text-align:left;border-bottom:1px solid #374151;font-size:0.85rem;}
+    th{color:#9ca3af;font-weight:500;}
+    tr:hover{background:#374151;}
+    .badge{padding:3px 8px;border-radius:4px;font-size:0.75rem;font-weight:500;}
+    .badge-live{background:#10b981;color:#fff;}
+    .badge-github{background:#6b7280;color:#fff;}
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:1000;align-items:center;justify-content:center;}
+    .modal.active{display:flex;}
+    .modal-content{background:#1f2937;border-radius:12px;padding:28px;width:90%;max-width:600px;max-height:90vh;overflow-y:auto;}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+    .modal-header h2{font-size:1.2rem;}
+    .modal-close{background:none;border:none;color:#9ca3af;font-size:1.5rem;cursor:pointer;}
+    .modal-close:hover{color:#fff;}
+    .form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;}
+    .toast{position:fixed;bottom:24px;right:24px;background:#10b981;color:#fff;padding:12px 24px;border-radius:8px;display:none;z-index:1001;font-size:0.85rem;}
+    .toast.show{display:block;animation:slideIn 0.3s ease;}
+    @keyframes slideIn{from{transform:translateX(100%);opacity:0;}to{transform:translateX(0);opacity:1;}}
+    .list-item{background:#374151;border-radius:8px;padding:14px;margin-bottom:10px;position:relative;}
+    .list-item-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+    .list-item-header h4{font-size:0.9rem;}
+    .list-item-header .actions{display:flex;gap:6px;}
+    .list-item p{font-size:0.8rem;color:#9ca3af;}
+    .skill-tag{display:inline-block;background:#4b5563;padding:4px 10px;border-radius:4px;font-size:0.75rem;margin:2px;cursor:pointer;}
+    .skill-tag:hover{background:#ef4444;color:#fff;}
+    @media(max-width:900px){.admin{grid-template-columns:1fr;}.sidebar{display:none;}.stats-row{grid-template-columns:repeat(2,1fr);}.form-row,.form-row-3{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div class="admin">
+  <div class="sidebar">
+    <h2><i class="fas fa-cube"></i> Admin</h2>
+    <ul>
+      <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a href="#" data-section="projects"><i class="fas fa-folder"></i> Projects</a></li>
+      <li><a href="#" data-section="hero"><i class="fas fa-star"></i> Hero</a></li>
+      <li><a href="#" data-section="about"><i class="fas fa-user"></i> About</a></li>
+      <li><a href="#" data-section="skills"><i class="fas fa-code"></i> Skills</a></li>
+      <li><a href="#" data-section="timeline"><i class="fas fa-clock"></i> Timeline</a></li>
+      <li><a href="#" data-section="blog"><i class="fas fa-pen"></i> Blog</a></li>
+      <li><a href="#" data-section="testimonials"><i class="fas fa-quote-right"></i> Testimonials</a></li>
+      <li><a href="#" data-section="contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      <li><a href="#" data-section="footer"><i class="fas fa-shoe-prints"></i> Footer</a></li>
+      <li><a href="/" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <!-- Dashboard -->
+    <div class="section active" id="dashboard">
+      <div class="page-header"><h1>Dashboard</h1><p>Overview of your portfolio</p></div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="icon"><i class="fas fa-folder"></i></div><div class="number" id="statProjects">0</div><div class="label">Projects</div></div>
+        <div class="stat-card"><div class="icon"><i class="fas fa-star"></i></div><div class="number" id="statFeatured">0</div><div class="label">Featured</div></div>
+        <div class="stat-card"><div class="icon"><i class="fas fa-clock"></i></div><div class="number" id="statYears">0</div><div class="label">Years Experience</div></div>
+        <div class="stat-card"><div class="icon"><i class="fas fa-users"></i></div><div class="number" id="statClients">0</div><div class="label">Happy Clients</div></div>
+      </div>
+      <div class="card">
+        <h3>Recent Projects</h3>
+        <table><thead><tr><th>Title</th><th>Category</th><th>Actions</th></tr></thead><tbody id="recentTable"></tbody></table>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="section" id="projects">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div><h1>Projects</h1><p>Manage your portfolio projects</p></div>
+        <button class="btn btn-primary" onclick="openProjectModal()"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div class="card"><table><thead><tr><th>Title</th><th>Category</th><th>Links</th><th>Featured</th><th>Actions</th></tr></thead><tbody id="projectsTable"></tbody></table></div>
+    </div>
+
+    <!-- Hero -->
+    <div class="section" id="hero">
+      <div class="page-header"><h1>Hero Section</h1><p>Edit the main landing section</p></div>
+      <div class="card">
+        <h3>Content</h3>
+        <div class="form-group"><label>Headline</label><input type="text" id="s_heroHeadline"></div>
+        <div class="form-group"><label>Description</label><input type="text" id="s_heroDesc"></div>
+        <div class="form-group"><label>Button Text</label><input type="text" id="s_heroButtonText"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Status Text</label><input type="text" id="s_statusText"></div>
+          <div class="form-group"><label>Status Project</label><input type="text" id="s_statusProject"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Quote</h3>
+        <div class="form-group"><label>Quote Text</label><input type="text" id="s_quoteText"></div>
+        <div class="form-group"><label>Author</label><input type="text" id="s_quoteAuthor"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+    </div>
+
+    <!-- About -->
+    <div class="section" id="about">
+      <div class="page-header"><h1>About Section</h1><p>Edit about me content</p></div>
+      <div class="card">
+        <div class="form-group"><label>Greeting</label><input type="text" id="s_aboutGreeting"></div>
+        <div class="form-group"><label>Paragraph 1</label><textarea id="s_aboutP1"></textarea></div>
+        <div class="form-group"><label>Paragraph 2</label><textarea id="s_aboutP2"></textarea></div>
+        <div class="form-group"><label>Button Text</label><input type="text" id="s_aboutButtonText"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+    </div>
+
+    <!-- Skills -->
+    <div class="section" id="skills">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div><h1>Skills</h1><p>Manage skill categories</p></div>
+        <button class="btn btn-primary" onclick="openSkillModal()"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div id="skillsList"></div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section" id="timeline">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div><h1>Timeline</h1><p>Manage experience items</p></div>
+        <button class="btn btn-primary" onclick="openTimelineModal()"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div id="timelineList"></div>
+    </div>
+
+    <!-- Blog -->
+    <div class="section" id="blog">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div><h1>Blog</h1><p>Manage blog posts</p></div>
+        <button class="btn btn-primary" onclick="openBlogModal()"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div id="blogList"></div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="section" id="testimonials">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div><h1>Testimonials</h1><p>Manage client testimonials</p></div>
+        <button class="btn btn-primary" onclick="openTestimonialModal()"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div id="testimonialsList"></div>
+    </div>
+
+    <!-- Contact -->
+    <div class="section" id="contact">
+      <div class="page-header"><h1>Contact & Social</h1><p>Edit contact info and social links</p></div>
+      <div class="card">
+        <h3>Contact Info</h3>
+        <div class="form-group"><label>Contact Description</label><textarea id="s_contactDesc"></textarea></div>
+        <div class="form-group"><label>Contact Title</label><input type="text" id="s_contactTitle"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Discord</label><input type="text" id="s_discord"></div>
+          <div class="form-group"><label>Email</label><input type="email" id="s_email"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Social Links</h3>
+        <div class="form-row">
+          <div class="form-group"><label>GitHub URL</label><input type="url" id="s_socialGithub"></div>
+          <div class="form-group"><label>Twitter URL</label><input type="url" id="s_socialTwitter"></div>
+        </div>
+        <div class="form-group"><label>LinkedIn URL</label><input type="url" id="s_socialLinkedin"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="section" id="footer">
+      <div class="page-header"><h1>Footer & General</h1><p>Edit footer, newsletter, and meta info</p></div>
+      <div class="card">
+        <h3>General</h3>
+        <div class="form-group"><label>Site Name / Logo</label><input type="text" id="s_siteName"></div>
+        <div class="form-group"><label>Meta Title</label><input type="text" id="s_metaTitle"></div>
+        <div class="form-group"><label>Meta Description</label><textarea id="s_metaDesc"></textarea></div>
+        <div class="form-group"><label>Meta Keywords</label><input type="text" id="s_metaKeywords"></div>
+      </div>
+      <div class="card">
+        <h3>Stats (Auto-calculated)</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Start Year (for experience calc)</label><input type="number" id="s_startYear"></div>
+          <div class="form-group"><label>Happy Clients</label><input type="number" id="s_happyClients"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Newsletter</h3>
+        <div class="form-group"><label>Title</label><input type="text" id="s_newsletterTitle"></div>
+        <div class="form-group"><label>Description</label><input type="text" id="s_newsletterDesc"></div>
+      </div>
+      <div class="card">
+        <h3>Footer</h3>
+        <div class="form-group"><label>Copyright Text</label><input type="text" id="s_footerCopyright"></div>
+        <div class="form-group"><label>Tagline</label><input type="text" id="s_footerTagline"></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Project Modal -->
+<div class="modal" id="projectModal">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="pmTitle">Add Project</h2><button class="modal-close" onclick="closeModal('projectModal')">&times;</button></div>
+    <form id="projectForm">
+      <input type="hidden" id="p_id">
+      <div class="form-group"><label>Title *</label><input type="text" id="p_title" required></div>
+      <div class="form-group"><label>Description *</label><textarea id="p_desc" required></textarea></div>
+      <div class="form-group"><label>Tags (comma separated) *</label><input type="text" id="p_tags" placeholder="HTML, CSS, JavaScript" required></div>
+      <div class="form-row">
+        <div class="form-group"><label>Category</label><select id="p_category"><option value="all">All</option><option value="html">HTML</option><option value="react">React</option><option value="python">Python</option><option value="node">Node.js</option></select></div>
+        <div class="form-group"><label>Order</label><input type="number" id="p_order" value="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Live URL</label><input type="url" id="p_live"></div>
+        <div class="form-group"><label>GitHub URL</label><input type="url" id="p_github"></div>
+      </div>
+      <div class="form-group">
+        <label>Project Image</label>
+        <input type="file" id="p_image_file" accept="image/*" onchange="previewImage(this)">
+        <input type="hidden" id="p_image">
+        <div id="imagePreview" style="margin-top:10px;"></div>
+      </div>
+      <div class="form-group"><label><input type="checkbox" id="p_featured"> Featured</label></div>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('projectModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Skill Modal -->
+<div class="modal" id="skillModal">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="smTitle">Add Skill</h2><button class="modal-close" onclick="closeModal('skillModal')">&times;</button></div>
+    <form id="skillForm">
+      <input type="hidden" id="s_idx">
+      <div class="form-group"><label>Category Name *</label><input type="text" id="s_name" required></div>
+      <div class="form-group"><label>Items (one per line or separated by ·)</label><textarea id="s_items" required></textarea></div>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('skillModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Timeline Modal -->
+<div class="modal" id="timelineModal">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="tmTitle">Add Timeline Item</h2><button class="modal-close" onclick="closeModal('timelineModal')">&times;</button></div>
+    <form id="timelineForm">
+      <input type="hidden" id="t_idx">
+      <div class="form-group"><label>Date *</label><input type="text" id="t_date" placeholder="2022 - Present" required></div>
+      <div class="form-group"><label>Title *</label><input type="text" id="t_title" required></div>
+      <div class="form-group"><label>Company *</label><input type="text" id="t_company" required></div>
+      <div class="form-group"><label>Description</label><textarea id="t_desc"></textarea></div>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('timelineModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Blog Modal -->
+<div class="modal" id="blogModal">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="bmTitle">Add Blog Post</h2><button class="modal-close" onclick="closeModal('blogModal')">&times;</button></div>
+    <form id="blogForm">
+      <input type="hidden" id="b_idx">
+      <div class="form-row">
+        <div class="form-group"><label>Date *</label><input type="text" id="b_date" placeholder="Jan 15, 2024" required></div>
+        <div class="form-group"><label>Icon (FontAwesome)</label><input type="text" id="b_icon" placeholder="fa-code"></div>
+      </div>
+      <div class="form-group"><label>Title *</label><input type="text" id="b_title" required></div>
+      <div class="form-group"><label>Description</label><input type="text" id="b_desc"></div>
+      <div class="form-group"><label>Link URL</label><input type="url" id="b_link"></div>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('blogModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Testimonial Modal -->
+<div class="modal" id="testimonialModal">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="tstTitle">Add Testimonial</h2><button class="modal-close" onclick="closeModal('testimonialModal')">&times;</button></div>
+    <form id="testimonialForm">
+      <input type="hidden" id="tst_idx">
+      <div class="form-group"><label>Quote *</label><textarea id="tst_quote" required></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Author *</label><input type="text" id="tst_author" required></div>
+        <div class="form-group"><label>Role</label><input type="text" id="tst_role" placeholder="CEO, TechStart"></div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('testimonialModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved!</div>
+
+<script>
+const API = '/api';
+let settings = {};
+let projects = [];
+
+// Navigation
+document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById(this.dataset.section).classList.add('active');
+  });
+});
+
+function showToast(msg='Saved!') {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+
+// Image Upload
+function previewImage(input) {
+  const preview = document.getElementById('imagePreview');
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.innerHTML = '<img src="' + e.target.result + '" style="max-width:200px;border-radius:8px;border:1px solid #4b5563;">';
+    };
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    preview.innerHTML = '';
+  }
+}
+
+async function uploadImage() {
+  const fileInput = document.getElementById('p_image_file');
+  if (!fileInput.files || !fileInput.files[0]) return '';
+  const formData = new FormData();
+  formData.append('image', fileInput.files[0]);
+  try {
+    const res = await fetch('/api/upload', { method: 'POST', body: formData });
+    const data = await res.json();
+    return data.url || '';
+  } catch(e) { console.error(e); return ''; }
+}
+
+// ========== SETTINGS ==========
+const settingFields = [
+  'siteName','metaTitle','metaDesc','metaKeywords','heroHeadline','heroDesc','heroButtonText',
+  'statusText','statusProject','quoteText','quoteAuthor','startYear','happyClients',
+  'aboutGreeting','aboutP1','aboutP2','aboutButtonText',
+  'contactDesc','contactTitle','discord','email',
+  'socialGithub','socialTwitter','socialLinkedin',
+  'newsletterTitle','newsletterDesc','footerCopyright','footerTagline'
+];
+
+async function loadSettings() {
+  try {
+    const res = await fetch(`${API}/settings`);
+    settings = await res.json();
+    settingFields.forEach(f => {
+      const el = document.getElementById('s_'+f);
+      if (el) el.value = settings[f] || '';
+    });
+    updateDashboard();
+  } catch(e) { console.error('Settings load error:', e); }
+}
+
+async function saveSettings() {
+  settingFields.forEach(f => {
+    const el = document.getElementById('s_'+f);
+    if (el) settings[f] = el.value;
+  });
+  try {
+    await fetch(`${API}/settings`, {
+      method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(settings)
+    });
+    showToast();
+  } catch(e) { console.error(e); }
+}
+
+// ========== DASHBOARD ==========
+function updateDashboard() {
+  const years = settings.startYear ? new Date().getFullYear() - parseInt(settings.startYear) : 0;
+  document.getElementById('statProjects').textContent = projects.length;
+  document.getElementById('statFeatured').textContent = projects.filter(p=>p.featured).length;
+  document.getElementById('statYears').textContent = years;
+  document.getElementById('statClients').textContent = settings.happyClients || 0;
+  
+  document.getElementById('recentTable').innerHTML = projects.slice(0,5).map(p=>`
+    <tr><td>${p.title}</td><td>${p.category}</td>
+    <td><button class="btn btn-sm btn-primary" onclick="editProject('${p._id}')">Edit</button></td></tr>
+  `).join('');
+}
+
+// ========== PROJECTS ==========
+async function loadProjects() {
+  const res = await fetch(`${API}/projects`);
+  projects = await res.json();
+  renderProjectsTable();
+  updateDashboard();
+}
+
+function renderProjectsTable() {
+  document.getElementById('projectsTable').innerHTML = projects.map(p=>`
+    <tr>
+      <td><strong>${p.title}</strong></td><td>${p.category}</td>
+      <td>${p.liveUrl?'<span class="badge badge-live">Live</span> ':''}${p.githubUrl?'<span class="badge badge-github">Git</span>':''}</td>
+      <td>${p.featured?'⭐':'-'}</td>
+      <td><button class="btn btn-sm btn-primary" onclick="editProject('${p._id}')">Edit</button> <button class="btn btn-sm btn-danger" onclick="deleteProject('${p._id}')">Del</button></td>
+    </tr>
+  `).join('');
+}
+
+function openProjectModal(p=null) {
+  document.getElementById('projectModal').classList.add('active');
+  if(p){
+    document.getElementById('pmTitle').textContent='Edit Project';
+    document.getElementById('p_id').value=p._id;
+    document.getElementById('p_title').value=p.title;
+    document.getElementById('p_desc').value=p.description;
+    document.getElementById('p_tags').value=p.tags;
+    document.getElementById('p_category').value=p.category;
+    document.getElementById('p_order').value=p.order||0;
+    document.getElementById('p_live').value=p.liveUrl||'';
+    document.getElementById('p_github').value=p.githubUrl||'';
+    document.getElementById('p_image').value=p.image||'';
+    document.getElementById('p_featured').checked=p.featured;
+    // Show current image preview
+    const preview = document.getElementById('imagePreview');
+    if (p.image) {
+      preview.innerHTML = '<img src="' + p.image + '" style="max-width:200px;border-radius:8px;border:1px solid #4b5563;">';
+    } else {
+      preview.innerHTML = '';
+    }
+  } else {
+    document.getElementById('pmTitle').textContent='Add Project';
+    document.getElementById('projectForm').reset();
+    document.getElementById('p_id').value='';
+    document.getElementById('imagePreview').innerHTML='';
+  }
+}
+function editProject(id){ const p=projects.find(x=>x._id===id); if(p) openProjectModal(p); }
+async function deleteProject(id){
+  if(!confirm('Delete this project?')) return;
+  await fetch(`${API}/projects/${id}`,{method:'DELETE'});
+  showToast('Deleted!'); loadProjects();
+}
+document.getElementById('projectForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const id=document.getElementById('p_id').value;
+  
+  // Upload image if selected
+  let imageUrl = document.getElementById('p_image').value;
+  const fileInput = document.getElementById('p_image_file');
+  if (fileInput.files && fileInput.files[0]) {
+    const formData = new FormData();
+    formData.append('image', fileInput.files[0]);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.url) imageUrl = data.url;
+    } catch(e) { console.error(e); }
+  }
+  
+  const data={
+    title:document.getElementById('p_title').value,
+    description:document.getElementById('p_desc').value,
+    tags:document.getElementById('p_tags').value,
+    category:document.getElementById('p_category').value,
+    order:parseInt(document.getElementById('p_order').value)||0,
+    liveUrl:document.getElementById('p_live').value,
+    githubUrl:document.getElementById('p_github').value,
+    image:imageUrl,
+    featured:document.getElementById('p_featured').checked
+  };
+  if(id){ await fetch(`${API}/projects/${id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }
+  else { await fetch(`${API}/projects`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }
+  closeModal('projectModal'); showToast(); loadProjects();
+});
+
+// ========== SKILLS ==========
+function renderSkills(){
+  const list=document.getElementById('skillsList');
+  const skills=settings.skills||[];
+  list.innerHTML=skills.map((s,i)=>`
+    <div class="card list-item">
+      <div class="list-item-header"><h4>${s.name}</h4>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary" onclick="editSkill(${i})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteSkill(${i})">Del</button>
+        </div>
+      </div>
+      <p>${(s.items||'').replace(/\n/g,'<br>')}</p>
+    </div>
+  `).join('');
+}
+function openSkillModal(i=null){
+  document.getElementById('skillModal').classList.add('active');
+  if(i!==null){
+    document.getElementById('smTitle').textContent='Edit Skill';
+    document.getElementById('s_idx').value=i;
+    document.getElementById('s_name').value=settings.skills[i].name;
+    document.getElementById('s_items').value=settings.skills[i].items;
+  } else {
+    document.getElementById('smTitle').textContent='Add Skill';
+    document.getElementById('skillForm').reset();
+    document.getElementById('s_idx').value='';
+  }
+}
+function editSkill(i){ openSkillModal(i); }
+function deleteSkill(i){ settings.skills.splice(i,1); saveSettings(); renderSkills(); }
+document.getElementById('skillForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const idx=document.getElementById('s_idx').value;
+  const data={ name:document.getElementById('s_name').value, items:document.getElementById('s_items').value };
+  if(idx==='') settings.skills.push(data);
+  else settings.skills[idx]=data;
+  saveSettings(); closeModal('skillModal'); renderSkills();
+});
+
+// ========== TIMELINE ==========
+function renderTimeline(){
+  const list=document.getElementById('timelineList');
+  const tl=settings.timeline||[];
+  list.innerHTML=tl.map((t,i)=>`
+    <div class="card list-item">
+      <div class="list-item-header"><h4>${t.title} — ${t.company}</h4>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary" onclick="editTimeline(${i})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteTimeline(${i})">Del</button>
+        </div>
+      </div>
+      <p>${t.date}<br>${t.desc||''}</p>
+    </div>
+  `).join('');
+}
+function openTimelineModal(i=null){
+  document.getElementById('timelineModal').classList.add('active');
+  if(i!==null){
+    document.getElementById('tmTitle').textContent='Edit Item';
+    document.getElementById('t_idx').value=i;
+    document.getElementById('t_date').value=settings.timeline[i].date;
+    document.getElementById('t_title').value=settings.timeline[i].title;
+    document.getElementById('t_company').value=settings.timeline[i].company;
+    document.getElementById('t_desc').value=settings.timeline[i].desc||'';
+  } else {
+    document.getElementById('tmTitle').textContent='Add Item';
+    document.getElementById('timelineForm').reset();
+    document.getElementById('t_idx').value='';
+  }
+}
+function editTimeline(i){ openTimelineModal(i); }
+function deleteTimeline(i){ settings.timeline.splice(i,1); saveSettings(); renderTimeline(); }
+document.getElementById('timelineForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const idx=document.getElementById('t_idx').value;
+  const data={ date:document.getElementById('t_date').value, title:document.getElementById('t_title').value, company:document.getElementById('t_company').value, desc:document.getElementById('t_desc').value };
+  if(idx==='') settings.timeline.push(data);
+  else settings.timeline[idx]=data;
+  saveSettings(); closeModal('timelineModal'); renderTimeline();
+});
+
+// ========== BLOG ==========
+function renderBlog(){
+  const list=document.getElementById('blogList');
+  const bl=settings.blog||[];
+  list.innerHTML=bl.map((b,i)=>`
+    <div class="card list-item">
+      <div class="list-item-header"><h4><i class="fas ${b.icon||'fa-pen'}"></i> ${b.title}</h4>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary" onclick="editBlog(${i})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteBlog(${i})">Del</button>
+        </div>
+      </div>
+      <p>${b.date} — ${b.desc||''}</p>
+    </div>
+  `).join('');
+}
+function openBlogModal(i=null){
+  document.getElementById('blogModal').classList.add('active');
+  if(i!==null){
+    document.getElementById('bmTitle').textContent='Edit Post';
+    document.getElementById('b_idx').value=i;
+    document.getElementById('b_date').value=settings.blog[i].date;
+    document.getElementById('b_title').value=settings.blog[i].title;
+    document.getElementById('b_desc').value=settings.blog[i].desc||'';
+    document.getElementById('b_icon').value=settings.blog[i].icon||'';
+    document.getElementById('b_link').value=settings.blog[i].link||'';
+  } else {
+    document.getElementById('bmTitle').textContent='Add Post';
+    document.getElementById('blogForm').reset();
+    document.getElementById('b_idx').value='';
+  }
+}
+function editBlog(i){ openBlogModal(i); }
+function deleteBlog(i){ settings.blog.splice(i,1); saveSettings(); renderBlog(); }
+document.getElementById('blogForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const idx=document.getElementById('b_idx').value;
+  const data={ date:document.getElementById('b_date').value, title:document.getElementById('b_title').value, desc:document.getElementById('b_desc').value, icon:document.getElementById('b_icon').value, link:document.getElementById('b_link').value };
+  if(idx==='') settings.blog.push(data);
+  else settings.blog[idx]=data;
+  saveSettings(); closeModal('blogModal'); renderBlog();
+});
+
+// ========== TESTIMONIALS ==========
+function renderTestimonials(){
+  const list=document.getElementById('testimonialsList');
+  const ts=settings.testimonials||[];
+  list.innerHTML=ts.map((t,i)=>`
+    <div class="card list-item">
+      <div class="list-item-header"><h4>${t.author} — ${t.role||''}</h4>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary" onclick="editTestimonial(${i})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteTestimonial(${i})">Del</button>
+        </div>
+      </div>
+      <p>"${t.quote}"</p>
+    </div>
+  `).join('');
+}
+function openTestimonialModal(i=null){
+  document.getElementById('testimonialModal').classList.add('active');
+  if(i!==null){
+    document.getElementById('tstTitle').textContent='Edit Testimonial';
+    document.getElementById('tst_idx').value=i;
+    document.getElementById('tst_quote').value=settings.testimonials[i].quote;
+    document.getElementById('tst_author').value=settings.testimonials[i].author;
+    document.getElementById('tst_role').value=settings.testimonials[i].role||'';
+  } else {
+    document.getElementById('tstTitle').textContent='Add Testimonial';
+    document.getElementById('testimonialForm').reset();
+    document.getElementById('tst_idx').value='';
+  }
+}
+function editTestimonial(i){ openTestimonialModal(i); }
+function deleteTestimonial(i){ settings.testimonials.splice(i,1); saveSettings(); renderTestimonials(); }
+document.getElementById('testimonialForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const idx=document.getElementById('tst_idx').value;
+  const data={ quote:document.getElementById('tst_quote').value, author:document.getElementById('tst_author').value, role:document.getElementById('tst_role').value };
+  if(idx==='') settings.testimonials.push(data);
+  else settings.testimonials[idx]=data;
+  saveSettings(); closeModal('testimonialModal'); renderTestimonials();
+});
+
+// INIT
+loadSettings().then(()=>{ renderSkills(); renderTimeline(); renderBlog(); renderTestimonials(); });
+loadProjects();
+</script>
+</body>
+</html>
