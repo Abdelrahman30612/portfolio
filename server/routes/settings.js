@@ -1,19 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const { readDB, writeDB } = require('../db');
+const db = require('../db');
 
 // Get settings
-router.get('/', (req, res) => {
-  const db = readDB();
-  res.json(db.settings);
+router.get('/', async (req, res) => {
+  try {
+    const settings = await db.getSettings();
+    res.json(settings);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // Update settings
-router.put('/', (req, res) => {
-  const db = readDB();
-  db.settings = { ...db.settings, ...req.body };
-  writeDB(db);
-  res.json(db.settings);
+router.put('/', async (req, res) => {
+  try {
+    const settings = await db.updateSettings(req.body);
+    res.json(settings);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 module.exports = router;

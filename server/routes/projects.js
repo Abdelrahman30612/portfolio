@@ -1,61 +1,66 @@
 const express = require('express');
 const router = express.Router();
-const { readDB, writeDB } = require('../db');
+const db = require('../db');
 
 // Get all projects
-router.get('/', (req, res) => {
-  const db = readDB();
-  const projects = db.projects.sort((a, b) => (a.order || 0) - (b.order || 0));
-  res.json(projects);
+router.get('/', async (req, res) => {
+  try {
+    const projects = await db.getProjects();
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // Get single project
-router.get('/:id', (req, res) => {
-  const db = readDB();
-  const project = db.projects.find(p => p._id === req.params.id);
-  if (!project) return res.status(404).json({ message: 'Project not found' });
-  res.json(project);
+router.get('/:id', async (req, res) => {
+  try {
+    const project = await db.getProject(req.params.id);
+    if (!project) return res.status(404).json({ message: 'Project not found' });
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // Create project
-router.post('/', (req, res) => {
-  const db = readDB();
-  const project = {
-    _id: Date.now().toString(),
-    title: req.body.title,
-    description: req.body.description,
-    tags: req.body.tags,
-    category: req.body.category || 'all',
-    liveUrl: req.body.liveUrl || '',
-    githubUrl: req.body.githubUrl || '',
-    image: req.body.image || '',
-    order: req.body.order || 0,
-    featured: req.body.featured || false,
-    createdAt: new Date().toISOString()
-  };
-  db.projects.push(project);
-  writeDB(db);
-  res.status(201).json(project);
+router.post('/', async (req, res) => {
+  try {
+    const project = await db.createProject({
+      title: req.body.title,
+      description: req.body.description,
+      tags: req.body.tags,
+      category: req.body.category || 'all',
+      liveUrl: req.body.liveUrl || '',
+      githubUrl: req.body.githubUrl || '',
+      image: req.body.image || '',
+      order: req.body.order || 0,
+      featured: req.body.featured || false
+    });
+    res.status(201).json(project);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 // Update project
-router.put('/:id', (req, res) => {
-  const db = readDB();
-  const index = db.projects.findIndex(p => p._id === req.params.id);
-  if (index === -1) return res.status(404).json({ message: 'Project not found' });
-  db.projects[index] = { ...db.projects[index], ...req.body };
-  writeDB(db);
-  res.json(db.projects[index]);
+router.put('/:id', async (req, res) => {
+  try {
+    const project = await db.updateProject(req.params.id, req.body);
+    res.json(project);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 // Delete project
-router.delete('/:id', (req, res) => {
-  const db = readDB();
-  const index = db.projects.findIndex(p => p._id === req.params.id);
-  if (index === -1) return res.status(404).json({ message: 'Project not found' });
-  db.projects.splice(index, 1);
-  writeDB(db);
-  res.json({ message: 'Project deleted' });
+router.delete('/:id', async (req, res) => {
+  try {
+    await db.deleteProject(req.params.id);
+    res.json({ message: 'Project deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;
