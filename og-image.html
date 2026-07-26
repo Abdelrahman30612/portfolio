@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 1200px;
+  height: 633px;
+  background: linear-gradient(135deg, #191b24 0%, #20232f 50%, #191b24 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+}
+.bg-circle.c1 { width: 400px; height: 400px; background: #b463f0; top: -100px; right: -50px; }
+.bg-circle.c2 { width: 300px; height: 300px; background: #c9e264; bottom: -80px; left: -50px; }
+.bg-circle.c3 { width: 200px; height: 200px; background: #b463f0; bottom: 50px; right: 200px; }
+.content {
+  text-align: center;
+  z-index: 1;
+  padding: 40px;
+}
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #b463f0, #c9e264);
+  margin: 0 auto 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  color: #191b24;
+  font-weight: bold;
+}
+h1 {
+  color: #e7e8ee;
+  font-size: 48px;
+  margin-bottom: 12px;
+  letter-spacing: -1px;
+}
+h1 span { color: #b463f0; }
+p {
+  color: #9497a8;
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+.tags {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.tag {
+  background: rgba(180, 99, 240, 0.15);
+  color: #b463f0;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  border: 1px solid rgba(180, 99, 240, 0.3);
+}
+</style>
+</head>
+<body>
+  <div class="bg-circle c1"></div>
+  <div class="bg-circle c2"></div>
+  <div class="bg-circle c3"></div>
+  <div class="content">
+    <div class="avatar">A</div>
+    <h1><span>Abdelrahman</span> — Portfolio</h1>
+    <p>Full stack PHP & Front-end React Developer</p>
+    <div class="tags">
+      <span class="tag">PHP</span>
+      <span class="tag">Laravel</span>
+      <span class="tag">React</span>
+      <span class="tag">JavaScript</span>
+    </div>
+  </div>
+</body>
+</html>
