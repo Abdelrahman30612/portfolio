@@ -54,7 +54,8 @@ const defaultSettings = {
   footerTagline: 'Web designer and front-end developer',
   socialGithub: 'https://github.com/',
   socialTwitter: 'https://twitter.com/',
-  socialLinkedin: 'https://linkedin.com/'
+  socialLinkedin: 'https://linkedin.com/',
+  adminPassword: 'AbdoAbrazeq@123'
 };
 
 const defaultProjects = [

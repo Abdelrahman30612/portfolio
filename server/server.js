@@ -17,6 +17,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/settings', require('./routes/settings'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/auth', require('./routes/auth'));
 app.use('/admin', require('./routes/admin'));
 
 db.seedIfEmpty().then(() => {

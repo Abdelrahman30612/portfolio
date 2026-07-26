@@ -95,6 +95,7 @@
       <li><a href="#" data-section="contact"><i class="fas fa-envelope"></i> Contact</a></li>
       <li><a href="#" data-section="footer"><i class="fas fa-shoe-prints"></i> Footer</a></li>
       <li><a href="/" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a></li>
+      <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
     </ul>
   </div>
 
@@ -242,6 +243,12 @@
         <div class="form-group"><label>Copyright Text</label><input type="text" id="s_footerCopyright"></div>
         <div class="form-group"><label>Tagline</label><input type="text" id="s_footerTagline"></div>
       </div>
+      <div class="card">
+        <h3>Admin Password</h3>
+        <div class="form-group"><label>Current Password</label><input type="password" id="s_currentPassword"></div>
+        <div class="form-group"><label>New Password</label><input type="password" id="s_newPassword"></div>
+        <button class="btn btn-primary" onclick="changePassword()">Change Password</button>
+      </div>
       <button class="btn btn-primary" onclick="saveSettings()">Save</button>
     </div>
   </div>
@@ -341,6 +348,12 @@
 <div class="toast" id="toast">Saved!</div>
 
 <script>
+// Auth check
+const token = localStorage.getItem('adminToken');
+if (!token) { window.location.href = '/admin'; }
+
+// Logout
+function logout() { localStorage.removeItem('adminToken'); window.location.href = '/admin'; }
 const API = '/api';
 let settings = {};
 let projects = [];
@@ -420,6 +433,23 @@ async function saveSettings() {
       method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(settings)
     });
     showToast();
+  } catch(e) { console.error(e); }
+}
+
+async function changePassword() {
+  const current = document.getElementById('s_currentPassword').value;
+  const newPass = document.getElementById('s_newPassword').value;
+  if (!current || !newPass) { showToast('Fill in both fields!'); return; }
+  try {
+    const res = await fetch(`${API}/settings`, {
+      method:'PUT', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ adminPassword: newPass })
+    });
+    if (res.ok) {
+      showToast('Password changed!');
+      document.getElementById('s_currentPassword').value = '';
+      document.getElementById('s_newPassword').value = '';
+    }
   } catch(e) { console.error(e); }
 }
 

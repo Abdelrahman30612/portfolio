@@ -20,6 +20,7 @@ const db = require('../server/db');
 app.use('/api/projects', require('../server/routes/projects'));
 app.use('/api/settings', require('../server/routes/settings'));
 app.use('/api/upload', require('../server/routes/upload'));
+app.use('/api/auth', require('../server/routes/auth'));
 
 // Admin panel
 app.get('/admin', (req, res) => {
