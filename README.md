@@ -84,6 +84,7 @@ http://localhost:3000
 ## Admin Panel
 
 - **URL:** `http://localhost:3000/admin`
+- - **Password:** `AbdoAbrazeq@123`
 - **Default Password:** Check with Abdelrahman
 - Change password from Admin Panel → Footer → Admin Password
 
@@ -100,25 +101,6 @@ http://localhost:3000
 | Footer | Meta info, newsletter, copyright, start year, clients |
 | Projects | Full CRUD with image upload |
 
-## Deployment
-
-### Railway (Recommended)
-
-1. Push code to GitHub
-2. Go to [railway.app](https://railway.app)
-3. New Project → Deploy from GitHub repo
-4. Add Environment Variables:
-   - `FIREBASE_SERVICE_ACCOUNT` - paste the JSON content
-   - `PORT` - `3000`
-5. Generate domain from Settings → Networking
-
-### Vercel
-
-1. Push code to GitHub
-2. Import project on [vercel.com](https://vercel.com)
-3. Add Environment Variable:
-   - `FIREBASE_SERVICE_ACCOUNT` - paste the JSON content
-4. Deploy
 
 ## Firebase Setup
 
