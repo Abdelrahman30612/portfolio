@@ -22,19 +22,16 @@ app.use('/api/settings', require('./routes/settings'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/admin', require('./routes/admin'));
 
-// Serve index.html for all other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
-});
+// Seed database
+db.seedIfEmpty().catch(console.error);
 
-// Seed database then start server
-db.seedIfEmpty().then(() => {
+// Only listen locally, not on Vercel
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
     console.log(`📋 Admin Panel: http://localhost:${PORT}/admin`);
     console.log(`🔥 Connected to Firebase Firestore`);
   });
-}).catch(err => {
-  console.error('❌ Failed to connect to Firebase:', err);
-  process.exit(1);
-});
+}
+
+module.exports = app;
