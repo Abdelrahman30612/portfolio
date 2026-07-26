@@ -31,14 +31,14 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #b463f0, #c9e264);
   margin: 0 auto 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 50px;
-  color: #191b24;
-  font-weight: bold;
+  overflow: hidden;
+  border: 3px solid #b463f0;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 h1 {
   color: #e7e8ee;
@@ -72,7 +72,7 @@ p {
   <div class="bg-circle c2"></div>
   <div class="bg-circle c3"></div>
   <div class="content">
-    <div class="avatar">A</div>
+    <div class="avatar"><img src="profile.png" alt="Abdelrahman"></div>
     <h1><span>Abdelrahman</span> — Portfolio</h1>
     <p>Full stack PHP & Front-end React Developer</p>
     <div class="tags">
