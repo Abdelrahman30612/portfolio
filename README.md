@@ -94,11 +94,12 @@ http://localhost:3000
 | About | Greeting, paragraphs, button text |
 | Skills | Add/edit/delete skill categories |
 | Timeline | Add/edit/delete experience items |
+| Certifications | Add/edit/delete certificates |
 | Blog | Add/edit/delete blog posts |
 | Testimonials | Add/edit/delete client reviews |
 | Contact | Description, discord, email, social links |
 | Footer | Meta info, newsletter, copyright, start year, clients |
-| Projects | Full CRUD with image upload |
+| Projects | Full CRUD with image upload and URL |
 
 
 ## Firebase Setup
