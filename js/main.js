@@ -437,26 +437,28 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Typing Effect
-  const headline = document.querySelector('h1.headline');
-  if (headline) {
-    const text = headline.innerHTML;
-    headline.innerHTML = '';
-    headline.style.opacity = '1';
-    let i = 0;
-    function typeWriter() {
-      if (i < text.length) {
-        if (text.substring(i, i + 4) === '<sp') {
-          const endTag = text.indexOf('>', i);
-          headline.innerHTML += text.substring(i, endTag + 1);
-          i = endTag + 1;
-        } else {
-          headline.innerHTML += text.charAt(i);
-          i++;
+  function initTypingEffect() {
+    const headline = document.querySelector('h1.headline');
+    if (headline) {
+      const text = headline.innerHTML;
+      headline.innerHTML = '';
+      headline.style.opacity = '1';
+      let i = 0;
+      function typeWriter() {
+        if (i < text.length) {
+          if (text.substring(i, i + 4) === '<sp') {
+            const endTag = text.indexOf('>', i);
+            headline.innerHTML += text.substring(i, endTag + 1);
+            i = endTag + 1;
+          } else {
+            headline.innerHTML += text.charAt(i);
+            i++;
+          }
+          setTimeout(typeWriter, 30);
         }
-        setTimeout(typeWriter, 30);
       }
+      setTimeout(typeWriter, 300);
     }
-    setTimeout(typeWriter, 1200);
   }
 
   // Smooth Scroll
@@ -470,6 +472,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ========== INIT ==========
   loadSettings().then(s => {
-    loadProjects().then(() => updateStats(s));
+    loadProjects().then(() => {
+      updateStats(s);
+      initTypingEffect();
+    });
   });
 });
