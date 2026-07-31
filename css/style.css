@@ -529,6 +529,29 @@ html{scroll-behavior:smooth;scroll-padding-top:80px;}
 .modal-actions .btn{padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.9rem;}
 @media(max-width:600px){.modal-images{grid-template-columns:1fr;}}
 
+/* ===== CERTIFICATIONS ===== */
+.certifications-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.cert-card{
+  background:var(--card);border:1px solid var(--card-border);border-radius:12px;
+  padding:20px;text-align:center;transition:all 0.3s ease;
+}
+.cert-card:hover{
+  border-color:var(--accent);transform:translateY(-4px);
+  box-shadow:0 10px 30px -10px rgba(180,99,240,0.3);
+}
+.cert-card i{
+  font-size:2rem;color:var(--accent);margin-bottom:12px;
+}
+.cert-card h4{
+  font-size:0.95rem;margin-bottom:6px;color:var(--text);
+}
+.cert-card p{
+  font-size:0.8rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;
+}
+@media(max-width:600px){.certifications-grid{grid-template-columns:1fr 1fr;}}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px){
   .hero-inner, .skills-layout, .about-layout{grid-template-columns:1fr;}

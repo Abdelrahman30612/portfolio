@@ -5,34 +5,35 @@ const SETTINGS_COLLECTION = 'settings';
 
 // Default settings
 const defaultSettings = {
-  siteName: 'Abdelrahman',
-  metaTitle: 'Abdelrahman — Web Designer & Front-end Developer',
-  metaDesc: 'Abdelrahman - Self-taught front-end developer crafting responsive websites where technologies meet creativity.',
-  metaKeywords: 'web designer, front-end developer, portfolio, React, Vue, JavaScript',
-  heroHeadline: 'Abdelrahman is a web designer and front-end developer',
-  heroDesc: 'He crafts responsive websites where technologies meet creativity',
+  siteName: 'Abdelrahman Mustafa',
+  metaTitle: 'Abdelrahman Mustafa — Full-Stack Developer',
+  metaDesc: 'Abdelrahman Mustafa - Full-Stack Developer specializing in PHP, Laravel, React.js, and modern web technologies.',
+  metaKeywords: 'full-stack developer, PHP, Laravel, React.js, JavaScript, Node.js, web developer, Egypt',
+  heroHeadline: 'Abdelrahman is a Full-Stack Developer',
+  heroDesc: 'Crafting scalable web solutions with PHP, Laravel, React.js & Node.js',
   heroButtonText: 'Contact me !!',
   statusText: 'Currently working on',
   statusProject: 'Portfolio',
   quoteText: 'With great power comes great electricity bill',
   quoteAuthor: '– Dr. Who',
-  startYear: 2022,
-  happyClients: 30,
-  aboutGreeting: "Hello, i'm Abdelrahman!",
-  aboutP1: "I'm a self-taught front-end developer based in Kyiv, Ukraine. I can develop responsive websites from scratch and raise them into modern user-friendly web experiences.",
-  aboutP2: "Transforming my creativity and knowledge into websites has been my passion for over a year. I have been helping various clients establish their presence online. I always strive to learn about the newest technologies and frameworks.",
+  startYear: 2025,
+  happyClients: 15,
+  aboutGreeting: "Hello, I'm Abdelrahman!",
+  aboutP1: "Detail-oriented Computer Science student and Full-Stack Developer at Egyptian E-Learning University (EELU). Proven track record in developing software solutions with strong expertise in back-end development, modern frameworks, and digital project management.",
+  aboutP2: "I have completed intensive training programs at Meta, ITI, and NTI-Creativa, gaining hands-on experience in PHP, Laravel, React.js, and Node.js. I am passionate about building scalable web applications and always strive to learn about the newest technologies and frameworks.",
   aboutButtonText: 'Read more →',
   skills: [
-    { name: 'Languages', items: 'TypeScript · Lua\nPython · JavaScript' },
-    { name: 'Databases', items: 'SQLite · PostgreSQL\nMongo' },
-    { name: 'Tools', items: 'VSCode · Neovim · Linux\nFigma · XFCE · Arch\nGit · Font Awesome' },
-    { name: 'Other', items: 'HTML · CSS · EJS · SCSS\nREST · Jinja' },
-    { name: 'Frameworks', items: 'React · Vue\nDisnake · Discord.js\nFlask · Express.js' }
+    { name: 'Languages', items: 'JavaScript · PHP\nPython · Java\nSQL · HTML5 · CSS3' },
+    { name: 'Back-End', items: 'Node.js · Express.js\nLaravel · RESTful APIs' },
+    { name: 'Front-End', items: 'React.js\nResponsive Web Design\nUI/UX Principles' },
+    { name: 'Databases', items: 'MongoDB · MySQL\nRelational DB Design\nERD Structuring' },
+    { name: 'Tools', items: 'Git · GitHub\nn8n · Workflow Automation\nProblem Solving' }
   ],
   timeline: [
-    { date: '2022 - Present', title: 'Front-end Developer', company: 'Freelance', desc: 'Building responsive websites and web applications for various clients using modern technologies.' },
-    { date: '2021 - 2022', title: 'Web Designer', company: 'Self-taught', desc: 'Learning web design principles and creating mockups in Figma for personal projects.' },
-    { date: '2020 - 2021', title: 'Started Coding Journey', company: 'Self-taught', desc: 'Began learning HTML, CSS, and JavaScript. Built first projects and fell in love with web development.' }
+    { date: 'June 2026 - Sep 2026', title: 'PHP Web Development Trainee', company: 'Information Technology Institute (ITI)', desc: 'Awarded and completed an intensive scholarship program specializing in PHP and backend web development. Gained hands-on experience with modern backend architecture, database integration, and industry-standard software lifecycle practices.' },
+    { date: 'March 2026 - July 2026', title: 'Front-End Development Trainee', company: 'Meta', desc: 'Completed a comprehensive front-end development program, gaining deep expertise in building responsive, accessible, and high-performance web applications with React.js.' },
+    { date: 'March 2026 - June 2026', title: 'Full-Stack PHP Trainee', company: 'NTI - Creativa', desc: 'Completed an intensive Full-Stack PHP development program, mastering backend architecture, database management, and modern PHP frameworks to deliver scalable enterprise solutions.' },
+    { date: 'Sep 2025 - Jan 2026', title: 'Software Developer', company: 'Academic & Personal Projects', desc: 'Designed and implemented practical desktop and web applications utilizing Python and Java, applying robust OOP principles.' }
   ],
   blog: [
     { date: 'Jan 15, 2024', title: 'Getting Started with React', desc: "A beginner's guide to building modern UIs with React...", icon: 'fa-code', link: '#' },
@@ -44,28 +45,30 @@ const defaultSettings = {
     { quote: 'Working with Abdelrahman was a pleasure. He understood our vision and brought it to life with clean, modern code.', author: 'Sarah Miller', role: 'Founder, DesignCo' },
     { quote: "Highly recommend Abdelrahman for any front-end development work. He's talented, reliable, and great to work with.", author: 'Mike Chen', role: 'CTO, InnovateLab' }
   ],
-  contactDesc: "I'm interested in freelance opportunities. However, if you have other requests or questions, don't hesitate to contact me.",
+  contactDesc: "I'm interested in freelance opportunities and professional collaborations. However, if you have other requests or questions, don't hesitate to contact me.",
   contactTitle: 'Message me here',
-  discord: '!Abdelrahman#3519',
-  email: 'abdelrahman@dev.ml',
+  discord: 'eng.abdulrahman.mustafa@gmail.com',
+  email: 'eng.abdulrahman.mustafa@gmail.com',
+  phone: '+201025565796',
+  location: 'Menofuia, Egypt',
   newsletterTitle: 'Subscribe to my newsletter',
   newsletterDesc: 'Get the latest updates about my work and blog posts.',
-  footerCopyright: '© Copyright 2022. Made by Abdelrahman',
-  footerTagline: 'Web designer and front-end developer',
-  socialGithub: 'https://github.com/',
+  footerCopyright: '© Copyright 2025. Made by Abdelrahman Mustafa',
+  footerTagline: 'Full-Stack Developer',
+  socialGithub: 'https://github.com/Abdelrahman30612',
   socialTwitter: 'https://twitter.com/',
-  socialLinkedin: 'https://linkedin.com/',
+  socialLinkedin: 'https://www.linkedin.com/in/abdelrahman-mustafa',
   adminPassword: 'AbdoAbrazeq@123'
 };
 
 const defaultProjects = [
-  { title: 'Kashkoul', description: 'An AI-powered web app that helps you explore universities worldwide and find the perfect match for your academic journey.', tags: 'React, Node.js, AI', category: 'react', liveUrl: '', githubUrl: '', image: '', order: 1, featured: true },
-  { title: 'Journly', description: 'A full-stack web application that lets you write, organize, and revisit your personal journals with a clean, distraction-free experience.', tags: 'HTML, CSS, JavaScript', category: 'html', liveUrl: '', githubUrl: '', image: '', order: 2, featured: true },
-  { title: 'Portfolio', description: 'A portfolio website with a minimal, clean aesthetic and modern UI/UX design.', tags: 'HTML, CSS, JavaScript', category: 'html', liveUrl: '', githubUrl: '', image: '', order: 3, featured: true },
-  { title: 'Culinaria', description: 'A web app that uses AI to generate recipes from a photo of your ingredients, making cooking easier and more accessible.', tags: 'HTML, CSS, JavaScript', category: 'html', liveUrl: '', githubUrl: '', image: '', order: 4, featured: true },
-  { title: 'React Todo App', description: 'A clean and intuitive todo application built with React, featuring task management and filtering capabilities.', tags: 'React, JavaScript', category: 'react', liveUrl: '', githubUrl: '', image: '', order: 5, featured: false },
-  { title: 'Python Web Scraper', description: 'A Python-based web scraper that extracts and organizes data from various websites automatically.', tags: 'Python, BeautifulSoup', category: 'python', liveUrl: '', githubUrl: '', image: '', order: 6, featured: false },
-  { title: 'Node.js API', description: 'A RESTful API built with Node.js and Express for managing portfolio data with authentication.', tags: 'Node.js, Express, MongoDB', category: 'node', liveUrl: '', githubUrl: '', image: '', order: 7, featured: false }
+  { title: 'Shipping Company Management System', description: 'Architected and developed a comprehensive shipping and logistics management system from scratch using the Laravel framework. Implemented complex backend operations, routing, and database relational models to streamline shipping processes and tracking.', tags: 'PHP, Laravel, MySQL', category: 'html', liveUrl: '', githubUrl: '', image: '', order: 1, featured: true },
+  { title: 'Cafe Management Website', description: 'Built a fully integrated, dynamic cafe website utilizing native PHP and SQL for efficient database interactions. Designed the system to handle administrative tasks, content management, and user requests seamlessly.', tags: 'PHP, SQL, HTML, CSS', category: 'html', liveUrl: '', githubUrl: '', image: '', order: 2, featured: true },
+  { title: 'Medical Landing Pages', description: 'Designed and developed over 5 highly responsive and conversion-optimized landing pages for healthcare professionals and doctors. Focused on UI/UX best practices to enhance user engagement.', tags: 'HTML, CSS, JavaScript', category: 'html', liveUrl: '', githubUrl: '', image: '', order: 3, featured: true },
+  { title: 'Portfolio Websites', description: 'Built and deployed more than 6 custom portfolio websites tailored to individual client needs. Ensured mobile responsiveness, cross-browser compatibility, and interactive web elements.', tags: 'HTML, CSS, JavaScript, React', category: 'react', liveUrl: '', githubUrl: '', image: '', order: 4, featured: true },
+  { title: 'Hypermarket Database Architecture', description: 'Designed a comprehensive Entity-Relationship Diagram (ERD) for a robust hypermarket management system. Structured complex relational database schemas to efficiently manage inventory, sales operations, and product categories.', tags: 'SQL, Database Design, ERD', category: 'html', liveUrl: '', githubUrl: '', image: '', order: 5, featured: false },
+  { title: 'Node.js REST API', description: 'A RESTful API built with Node.js and Express for managing portfolio data with authentication and CRUD operations.', tags: 'Node.js, Express, MongoDB', category: 'node', liveUrl: '', githubUrl: '', image: '', order: 6, featured: false },
+  { title: 'React Todo App', description: 'A clean and intuitive todo application built with React, featuring task management and filtering capabilities.', tags: 'React, JavaScript', category: 'react', liveUrl: '', githubUrl: '', image: '', order: 7, featured: false }
 ];
 
 // Seed Firestore if empty
