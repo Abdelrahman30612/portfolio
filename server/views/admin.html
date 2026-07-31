@@ -371,12 +371,28 @@
 <div class="toast" id="toast">Saved!</div>
 
 <script>
-// Auth check
-const token = localStorage.getItem('adminToken');
-if (!token) { window.location.href = '/admin'; }
+// Auth check - verify cookie with server
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/auth/verify-cookie');
+    if (!res.ok) {
+      window.location.href = '/admin';
+      return false;
+    }
+    return true;
+  } catch(e) {
+    window.location.href = '/admin';
+    return false;
+  }
+}
 
 // Logout
-function logout() { localStorage.removeItem('adminToken'); window.location.href = '/admin'; }
+function logout() { 
+  fetch('/api/auth/logout').then(() => {
+    localStorage.removeItem('adminToken'); 
+    window.location.href = '/admin'; 
+  });
+}
 const API = '/api';
 let settings = {};
 let projects = [];
@@ -783,8 +799,12 @@ document.getElementById('testimonialForm').addEventListener('submit', function(e
 });
 
 // INIT
-loadSettings().then(()=>{ renderSkills(); renderTimeline(); renderCerts(); renderBlog(); renderTestimonials(); });
-loadProjects();
+checkAuth().then(valid => {
+  if (valid) {
+    loadSettings().then(()=>{ renderSkills(); renderTimeline(); renderCerts(); renderBlog(); renderTestimonials(); });
+    loadProjects();
+  }
+});
 </script>
 </body>
 </html>
