@@ -283,6 +283,8 @@
       </div>
       <div class="form-group">
         <label>Project Image</label>
+        <input type="url" id="p_image_url" placeholder="https://example.com/image.jpg" style="margin-bottom:8px;">
+        <div style="color:#9ca3af;font-size:0.75rem;margin-bottom:8px;">OR upload a file:</div>
         <input type="file" id="p_image_file" accept="image/*" onchange="previewImage(this)">
         <input type="hidden" id="p_image">
         <div id="imagePreview" style="margin-top:10px;"></div>
@@ -538,6 +540,7 @@ function openProjectModal(p=null) {
     document.getElementById('p_live').value=p.liveUrl||'';
     document.getElementById('p_github').value=p.githubUrl||'';
     document.getElementById('p_image').value=p.image||'';
+    document.getElementById('p_image_url').value=p.image||'';
     document.getElementById('p_featured').checked=p.featured;
     // Show current image preview
     const preview = document.getElementById('imagePreview');
@@ -563,8 +566,8 @@ document.getElementById('projectForm').addEventListener('submit', async function
   e.preventDefault();
   const id=document.getElementById('p_id').value;
   
-  // Upload image if selected
-  let imageUrl = document.getElementById('p_image').value;
+  // Get image URL from URL input or file upload
+  let imageUrl = document.getElementById('p_image_url').value || document.getElementById('p_image').value;
   const fileInput = document.getElementById('p_image_file');
   if (fileInput.files && fileInput.files[0]) {
     const formData = new FormData();
