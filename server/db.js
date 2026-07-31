@@ -58,6 +58,14 @@ const defaultSettings = {
   socialGithub: 'https://github.com/Abdelrahman30612',
   socialTwitter: 'https://twitter.com/',
   socialLinkedin: 'https://www.linkedin.com/in/abdelrahman-mustafa',
+  certifications: [
+    { title: 'Front-End Development', issuer: 'Meta', icon: 'fa-certificate' },
+    { title: 'PHP Web Development', issuer: 'ITI', icon: 'fa-certificate' },
+    { title: 'Full-Stack PHP', issuer: 'NTI & Creativa', icon: 'fa-certificate' },
+    { title: 'CS50x', issuer: 'Harvard University', icon: 'fa-certificate' },
+    { title: 'CCNA', issuer: 'Cisco Networking Academy', icon: 'fa-certificate' },
+    { title: 'Back-End with PHP', issuer: 'Maharah Tech', icon: 'fa-certificate' }
+  ],
   adminPassword: 'AbdoAbrazeq@123'
 };
 

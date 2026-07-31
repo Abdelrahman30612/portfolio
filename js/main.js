@@ -208,6 +208,20 @@ document.addEventListener('DOMContentLoaded', function() {
         initSlider();
       }
 
+      // Certifications
+      if (s.certifications && s.certifications.length > 0) {
+        const container = document.getElementById('certificationsContainer');
+        if (container) {
+          container.innerHTML = s.certifications.map(c =>
+            `<div class="cert-card">
+              <i class="fas ${c.icon || 'fa-certificate'}"></i>
+              <h4>${c.title}</h4>
+              <p>${c.issuer}</p>
+            </div>`
+          ).join('');
+        }
+      }
+
       return s;
     } catch (e) {
       console.log('Settings API not available, using default HTML content');

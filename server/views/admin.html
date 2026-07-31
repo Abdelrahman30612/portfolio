@@ -90,6 +90,7 @@
       <li><a href="#" data-section="about"><i class="fas fa-user"></i> About</a></li>
       <li><a href="#" data-section="skills"><i class="fas fa-code"></i> Skills</a></li>
       <li><a href="#" data-section="timeline"><i class="fas fa-clock"></i> Timeline</a></li>
+      <li><a href="#" data-section="certifications"><i class="fas fa-certificate"></i> Certifications</a></li>
       <li><a href="#" data-section="blog"><i class="fas fa-pen"></i> Blog</a></li>
       <li><a href="#" data-section="testimonials"><i class="fas fa-quote-right"></i> Testimonials</a></li>
       <li><a href="#" data-section="contact"><i class="fas fa-envelope"></i> Contact</a></li>
@@ -173,6 +174,15 @@
         <button class="btn btn-primary" onclick="openTimelineModal()"><i class="fas fa-plus"></i> Add</button>
       </div>
       <div id="timelineList"></div>
+    </div>
+
+    <!-- Certifications -->
+    <div class="section" id="certifications">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div><h1>Certifications</h1><p>Manage your certificates</p></div>
+        <button class="btn btn-primary" onclick="openCertModal()"><i class="fas fa-plus"></i> Add</button>
+      </div>
+      <div id="certsList"></div>
     </div>
 
     <!-- Blog -->
@@ -307,6 +317,19 @@
       <div class="form-group"><label>Company *</label><input type="text" id="t_company" required></div>
       <div class="form-group"><label>Description</label><textarea id="t_desc"></textarea></div>
       <div class="form-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('timelineModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- Certifications Modal -->
+<div class="modal" id="certModal">
+  <div class="modal-content">
+    <div class="modal-header"><h2 id="cmTitle">Add Certification</h2><button class="modal-close" onclick="closeModal('certModal')">&times;</button></div>
+    <form id="certForm">
+      <input type="hidden" id="c_idx">
+      <div class="form-group"><label>Title *</label><input type="text" id="c_title" required></div>
+      <div class="form-group"><label>Issuer *</label><input type="text" id="c_issuer" required></div>
+      <div class="form-actions"><button type="button" class="btn btn-ghost" onclick="closeModal('certModal')">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div>
     </form>
   </div>
 </div>
@@ -635,6 +658,46 @@ document.getElementById('timelineForm').addEventListener('submit', function(e){
   saveSettings(); closeModal('timelineModal'); renderTimeline();
 });
 
+// ========== CERTIFICATIONS ==========
+function renderCerts(){
+  const list=document.getElementById('certsList');
+  const certs=settings.certifications||[];
+  list.innerHTML=certs.map((c,i)=>`
+    <div class="card list-item">
+      <div class="list-item-header"><h4><i class="fas fa-certificate"></i> ${c.title}</h4>
+        <div class="actions">
+          <button class="btn btn-sm btn-primary" onclick="editCert(${i})">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteCert(${i})">Del</button>
+        </div>
+      </div>
+      <p>${c.issuer}</p>
+    </div>
+  `).join('');
+}
+function openCertModal(i=null){
+  document.getElementById('certModal').classList.add('active');
+  if(i!==null){
+    document.getElementById('cmTitle').textContent='Edit Certification';
+    document.getElementById('c_idx').value=i;
+    document.getElementById('c_title').value=settings.certifications[i].title;
+    document.getElementById('c_issuer').value=settings.certifications[i].issuer;
+  } else {
+    document.getElementById('cmTitle').textContent='Add Certification';
+    document.getElementById('certForm').reset();
+    document.getElementById('c_idx').value='';
+  }
+}
+function editCert(i){ openCertModal(i); }
+function deleteCert(i){ settings.certifications.splice(i,1); saveSettings(); renderCerts(); }
+document.getElementById('certForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const idx=document.getElementById('c_idx').value;
+  const data={ title:document.getElementById('c_title').value, issuer:document.getElementById('c_issuer').value, icon:'fa-certificate' };
+  if(idx==='') settings.certifications.push(data);
+  else settings.certifications[idx]=data;
+  saveSettings(); closeModal('certModal'); renderCerts();
+});
+
 // ========== BLOG ==========
 function renderBlog(){
   const list=document.getElementById('blogList');
@@ -720,7 +783,7 @@ document.getElementById('testimonialForm').addEventListener('submit', function(e
 });
 
 // INIT
-loadSettings().then(()=>{ renderSkills(); renderTimeline(); renderBlog(); renderTestimonials(); });
+loadSettings().then(()=>{ renderSkills(); renderTimeline(); renderCerts(); renderBlog(); renderTestimonials(); });
 loadProjects();
 </script>
 </body>
