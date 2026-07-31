@@ -84,8 +84,7 @@ http://localhost:3000
 ## Admin Panel
 
 - **URL:** `http://localhost:3000/admin`
-- - **Password:** `AbdoAbrazeq@123`
-- **Default Password:** Check with Abdelrahman
+- **Password:** Contact Abdelrahman for the password
 - Change password from Admin Panel → Footer → Admin Password
 
 ### What you can edit:
